@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Outer Audio Wave Graphic Pill Shape -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M38,36 C38,32.7 40.7,30 44,30 L64,30 C67.3,30 70,32.7 70,36 L70,72 C70,75.3 67.3,78 64,78 L44,78 C40.7,78 38,75.3 38,72 Z" />
+    <!-- Play Triangle in Royal Blue -->
+    <path
+        android:fillColor="#2563EB"
+        android:pathData="M48,42 L64,54 L48,66 Z" />
+    <!-- Vibrant Yellow Accent Dot -->
+    <path
+        android:fillColor="#FACC15"
+        android:pathData="M66,34m-4,0a4,4 0 1,0 8,0a4,4 0 1,0 -8,0" />
+</vector>

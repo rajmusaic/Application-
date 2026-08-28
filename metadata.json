@@ -1,0 +1,7 @@
+{
+  "name": "VibePlay",
+  "description": "A modern, premium offline music player with smart automatic local lyric matching.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
