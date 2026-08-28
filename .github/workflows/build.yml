@@ -13,16 +13,20 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Setup Java JDK 17
+      - name: Setup Java JDK 21
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '21'
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Generate Default Debug Keystore
+      - name: Auto Accept Android Licenses
+        run: |
+          yes | sdkmanager --licenses || true
+
+      - name: Create Default Debug Keystore
         run: |
           mkdir -p ~/.android
           keytool -genkey -v -keystore ~/.android/debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
@@ -33,19 +37,20 @@ jobs:
             chmod +x gradlew
           fi
 
-      - name: Build APK (Fix KSP & Headless)
+      - name: Build APK with Gradle
         env:
           JAVA_TOOL_OPTIONS: "-Djava.awt.headless=true"
-          GRADLE_OPTS: "-Dorg.gradle.jvmargs='-Xmx4g -Djava.awt.headless=true' -Dksp.incremental=false"
+          GRADLE_OPTS: "-Xmx4g -Dorg.gradle.daemon=false -Dksp.incremental=false"
         run: |
           if [ -f "./gradlew" ]; then
-            ./gradlew assembleDebug --no-daemon --stacktrace
+            ./gradlew assembleDebug --no-daemon --info
           else
-            gradle assembleDebug --no-daemon --stacktrace
+            gradle assembleDebug --no-daemon --info
           fi
 
-      - name: Upload APK
+      - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: app-debug-apk
           path: "**/build/outputs/apk/debug/*.apk"
