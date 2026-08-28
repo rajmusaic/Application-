@@ -1,4 +1,4 @@
-name: Build Android APK
+name: Build Kotlin Android App
 
 on:
   push:
@@ -13,38 +13,23 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
       - name: Setup Java JDK
         uses: actions/setup-java@v4
         with:
-          distribution: 'zulu'
+          distribution: 'temurin'
           java-version: '17'
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
+      - name: Setup Gradle Cache
+        uses: gradle/actions/setup-gradle@v3
 
-      - name: Prepare Web Directory & Capacitor
-        run: |
-          mkdir -p www
-          find . -maxdepth 1 ! -name 'www' ! -name '.git' ! -name '.github' -exec cp -r {} www/ \; || true
-          npm init -y
-          npm install @capacitor/core @capacitor/cli @capacitor/android
-          npx cap init "My App" "com.myapp.player" --web-dir www
-          npx cap add android
-          npx cap sync android
+      - name: Make Gradlew Executable
+        run: chmod +x gradlew
 
       - name: Build Debug APK
-        run: |
-          cd android
-          chmod +x ./gradlew
-          ./gradlew assembleDebug --no-daemon
+        run: ./gradlew assembleDebug --no-daemon
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: app-debug
-          path: android/app/build/outputs/apk/debug/*.apk
+          name: my-kotlin-app
+          path: app/build/outputs/apk/debug/*.apk
